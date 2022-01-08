@@ -13,6 +13,18 @@ import java.util.Date;
                         "FROM Uporabnik u"
         )
 })
+@NamedNativeQueries(
+        {
+                @NamedNativeQuery(
+                        name = "Uporabnik.findUporabnikFromNameSurnameEmail",
+                        query = "SELECT * FROM uporabnik WHERE name = :name AND surname = :surname AND email = :email", resultClass = Uporabnik.class
+                ),
+                @NamedNativeQuery(
+                        name = "Uporabnik.findUporabnikFromEmail",
+                        query = "SELECT * FROM uporabnik WHERE email = :email", resultClass = Uporabnik.class
+                )
+        }
+)
 public class Uporabnik implements Serializable {
 
     @Column(nullable = false)

@@ -2,6 +2,7 @@ package si.evinjete.uporabniki;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.servlet.ServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,9 +25,29 @@ public class UporabnikResource {
     }
 
     @GET
-    @Path("{uporabnikId}")
-    public Response getUporabnik(@PathParam("uporabnikId") String uporabnikId) {
+    @Path("/uporabnik/{uporabnikId}")
+    public Response getUporabnikID(@PathParam("uporabnikId") String uporabnikId) {
         Uporabnik uporabnik = uporabnikBean.getUporabnik(uporabnikId);
+        return uporabnik != null
+                ? Response.ok(uporabnik).build()
+                : Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("/uporabnik/")
+    public Response getUporabnikNSE(@QueryParam("name") String name, @QueryParam("surname") String surname, @QueryParam("email") String email) {
+        List<Uporabnik> uporabnik = uporabnikBean.getUporabnikFromNameSurnameEmail(name,
+                surname,
+                email);
+        return uporabnik != null
+                ? Response.ok(uporabnik).build()
+                : Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("/email/")
+    public Response getUporabnikE(@QueryParam("email") String email) {
+        List<Uporabnik> uporabnik = uporabnikBean.getUporabnikFromEmail(email);
         return uporabnik != null
                 ? Response.ok(uporabnik).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
@@ -37,7 +58,10 @@ public class UporabnikResource {
 
         if (uporabnik.getName() == null || uporabnik.getSurname() == null || uporabnik.getEmail() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
-        } else {
+        } else if(!uporabnikBean.getUporabnikFromEmail(uporabnik.getEmail()).isEmpty()) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+        else {
             uporabnik.setTimestamp(new Date());
             uporabnikBean.addNewUporabnik(uporabnik);
         }

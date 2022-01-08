@@ -23,6 +23,26 @@ public class UporabnikService {
         return uporabniki;
     }
 
+    public List<Uporabnik> getUporabnikFromNameSurnameEmail(String name, String surname, String email){
+        List<Uporabnik> v = em
+                .createNamedQuery("Uporabnik.findUporabnikFromNameSurnameEmail", Uporabnik.class)
+                .setParameter("name", name)
+                .setParameter("surname", surname)
+                .setParameter("email", email)
+                .getResultList();
+
+        return v;
+    }
+
+    public List<Uporabnik> getUporabnikFromEmail(String email){
+        List<Uporabnik> v = em
+                .createNamedQuery("Uporabnik.findUporabnikFromEmail", Uporabnik.class)
+                .setParameter("email", email)
+                .getResultList();
+
+        return v;
+    }
+
     @Transactional
     public void saveUporabnik(Uporabnik uporabnik) {
         if (uporabnik != null) {
