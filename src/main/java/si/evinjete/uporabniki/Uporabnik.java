@@ -39,6 +39,8 @@ public class Uporabnik implements Serializable {
     private String email;
     @Column(name = "timestamp", nullable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date timestamp;
+    @Column(name = "type", nullable = false)
+    private Integer type; //Type of user - 0 means normal user, 1 is police officer, 2 is admin
 
 
     public Integer getId() {
@@ -80,5 +82,13 @@ public class Uporabnik implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }
