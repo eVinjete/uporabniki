@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+    <title>Kamere UI</title>
+</h:head>
+<h:body>
+    <h2>Vnesi podatke kamere:</h2>
+    <h:form>
+        <h:outputLabel for="id">
+            ID:
+            <h:inputText id="id" value="#{kameraBean.id}"/>
+        </h:outputLabel>
+        <br/>
+        <h:outputLabel for="location">
+            Lokacija:
+            <h:inputText id="location" value="#{kameraBean.location}"/>
+        </h:outputLabel>
+        <br/>
+        <h:outputLabel for="direction">
+            Smer:
+            <h:inputText id="direction" value="#{kameraBean.direction}"/>
+        </h:outputLabel>
+        <br/>
+        <br/>
+        <h:commandButton value="Add" action="#{kameraBean.addKamera()}"/>
+        <br/>
+        <h:commandButton value="Home" action="welcome"/>
+    </h:form>
+</h:body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Kamere</title>
+</h:head>
+<h:body>
+    <h2>Kamere</h2>
+    <ui:repeat value="#{kameraBean.getKamere()}" var="kamera">
+        <h:outputText value="#{kamera.toString()}"/>
+        <br/>
+    </ui:repeat>
+    <br />
+    <h:form>
+        <h:commandButton value="Domov" action="welcome"/>
+    </h:form>
+</h:body>
+</html>
