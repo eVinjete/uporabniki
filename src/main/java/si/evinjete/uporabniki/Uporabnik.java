@@ -37,6 +37,8 @@ public class Uporabnik implements Serializable {
     private String surname;
     @Column(name = "email", nullable = false, updatable = true)
     private String email;
+    @Column(name = "password", nullable = false, updatable = true)
+    private String password;
     @Column(name = "timestamp", nullable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date timestamp;
     @Column(name = "type", nullable = false)
@@ -90,5 +92,13 @@ public class Uporabnik implements Serializable {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

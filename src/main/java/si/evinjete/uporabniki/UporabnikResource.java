@@ -19,79 +19,51 @@ public class UporabnikResource {
     private UporabnikService uporabnikBean;
 
     @GET
-    @Path("test")
-    public Response getTest(){
-        return Response.ok().build();
-    }
-
-    @GET
-    public Response getAllUporabniki(@QueryParam("user") String userEmail) {
-        if(userEmail == null) return Response.status(Response.Status.FORBIDDEN).build();
-
-        List<Uporabnik> user = uporabnikBean.getUporabnikFromEmail(userEmail);
-        if(user.get(0).getType() < 2){
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
+    public Response getAllUporabniki() {
         List<Uporabnik> uporabniki = uporabnikBean.getUporabniki();
         return Response.ok(uporabniki).build();
     }
 
     @GET
     @Path("/uporabnik/{uporabnikId}")
-    public Response getUporabnikID(@PathParam("uporabnikId") String uporabnikId, @QueryParam("user") String userEmail) {
-        if(userEmail == null) return Response.status(Response.Status.FORBIDDEN).build();
-
-        List<Uporabnik> user = uporabnikBean.getUporabnikFromEmail(userEmail);
-        if(user.get(0).getType() < 2){
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
+    public Response getUporabnikID(@PathParam("uporabnikId") String uporabnikId) {
         Uporabnik uporabnik = uporabnikBean.getUporabnik(uporabnikId);
         return uporabnik != null
                 ? Response.ok(uporabnik).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
     }
 
-    @GET
-    @Path("/uporabnik/")
-    public Response getUporabnikNSE(@QueryParam("name") String name, @QueryParam("surname") String surname, @QueryParam("email") String email, @QueryParam("user") String userEmail) {
-        if(userEmail == null) return Response.status(Response.Status.FORBIDDEN).build();
-        if(name == null || surname == null || email == null) return Response.status(Response.Status.BAD_REQUEST).build();
-
-        List<Uporabnik> user = uporabnikBean.getUporabnikFromEmail(userEmail);
-        if(user.get(0).getType() < 2){
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
-        List<Uporabnik> uporabnik = uporabnikBean.getUporabnikFromNameSurnameEmail(name,
-                surname,
-                email);
-        return uporabnik != null
-                ? Response.ok(uporabnik).build()
-                : Response.status(Response.Status.NOT_FOUND).build();
-    }
 
     @GET
     @Path("/email/")
-    public Response getUporabnikE(@QueryParam("email") String email, @QueryParam("user") String userEmail) {
-        if(userEmail == null) return Response.status(Response.Status.FORBIDDEN).build();
+    public Response getUporabnikE(@QueryParam("email") String email) {
         if(email == null) return Response.status(Response.Status.BAD_REQUEST).build();
 
-        List<Uporabnik> user = uporabnikBean.getUporabnikFromEmail(userEmail);
-        if(user.get(0).getType() < 2){
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
         List<Uporabnik> uporabnik = uporabnikBean.getUporabnikFromEmail(email);
         return uporabnik != null
                 ? Response.ok(uporabnik).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @GET
+    @Path("/verify/")
+    public Response verifyUporabnikPassword(@QueryParam("user") String userEmail,
+                                            @QueryParam("password") String password) {
+
+        if(userEmail == null || password == null) return Response.status(Response.Status.BAD_REQUEST).build();
+
+        List<Uporabnik> user = uporabnikBean.getUporabnikFromEmail(userEmail);
+        if(!user.isEmpty() && user.get(0).getPassword().equals(password)){
+            return Response.ok(userEmail).build();
+        }
+
+        return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+    }
+
     @POST
     public Response addNewUporabnik(Uporabnik uporabnik) {
 
-        if (uporabnik.getName() == null || uporabnik.getSurname() == null || uporabnik.getEmail() == null || uporabnik.getType() == null) {
+        if (uporabnik.getName() == null || uporabnik.getSurname() == null || uporabnik.getEmail() == null || uporabnik.getType() == null || uporabnik.getPassword() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else if(!uporabnikBean.getUporabnikFromEmail(uporabnik.getEmail()).isEmpty()) {
             return Response.status(Response.Status.CONFLICT).build();
