@@ -54,7 +54,9 @@ public class UporabnikResource {
 
         List<Uporabnik> user = uporabnikBean.getUporabnikFromEmail(userEmail);
         if(!user.isEmpty() && user.get(0).getPassword().equals(password)){
-            return Response.ok(userEmail).build();
+            Uporabnik uporabnik = user.get(0);
+            uporabnik.setPassword(null);
+            return Response.ok(uporabnik).build();
         }
 
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
