@@ -19,6 +19,12 @@ public class UporabnikResource {
     private UporabnikService uporabnikBean;
 
     @GET
+    @Path("test")
+    public Response getTest(){
+        return Response.ok().build();
+    }
+
+    @GET
     public Response getAllUporabniki(@QueryParam("user") String userEmail) {
         if(userEmail == null) return Response.status(Response.Status.FORBIDDEN).build();
 
